@@ -6,7 +6,7 @@ namespace TestApi
     public class WebApiCoreContext : DbContext
     {
         // objects for bind with Db
-        public DbSet<CarModel> CarsModel { get; set; }
+        public DbSet<CarModel> CarModels { get; set; }
 
         public WebApiCoreContext(DbContextOptions<WebApiCoreContext> options) : base(options)
         { 

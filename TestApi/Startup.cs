@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using TestApi.Repository;
+using TestApi.Models;
 
 namespace TestApi
 {
@@ -31,6 +33,8 @@ namespace TestApi
             services.AddDbContext<WebApiCoreContext>(builder =>
                 builder.UseSqlServer(connectionString, b => b.MigrationsAssembly("TestApi"))
             );
+            // add a scoped service that realise IRepository
+            services.AddScoped<IRepository<CarModel>, CarsRepo>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

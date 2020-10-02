@@ -5,22 +5,40 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TestApi.Models;
+using TestApi.Repository;
 
 namespace TestApi.Controllers
 {
+    // now using Repository for realise RESTfull emmiters
     [ApiController]
     [Route("api/[controller]")]
     public class CarsController : ControllerBase
     {
-        private readonly WebApiCoreContext context;
-        public CarsController(WebApiCoreContext context)
+        public IRepository<CarModel> contextCars { get; private set; }
+        public CarsController(IRepository<CarModel> contextCars)
         {
-            this.context = context;
+            this.contextCars = contextCars;
         }
         [HttpGet]
         public IEnumerable<CarModel> Get()
         {
-            return context.CarsModel.ToList();
+            return contextCars.All;
+        }
+        [HttpGet("{id}")]
+        public ActionResult<CarModel> Get(int id)
+        {
+            return contextCars.FindById(id);
+        }
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] CarModel value)
+        {
+            contextCars.Add(value);
+        }
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            var entity = contextCars.FindById(id);
+            contextCars.Delete(entity);
         }
     }
 }
