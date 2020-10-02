@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TestApi.Models;
@@ -10,8 +11,9 @@ using TestApi.Repository;
 namespace TestApi.Controllers
 {
     // now using Repository for realise RESTfull emmiters
-    [ApiController]
+    
     [Route("api/[controller]")]
+    [ApiController]
     public class CarsController : ControllerBase
     {
         public IRepository<CarModel> contextCars { get; private set; }
@@ -20,14 +22,35 @@ namespace TestApi.Controllers
             this.contextCars = contextCars;
         }
         [HttpGet]
-        public IEnumerable<CarModel> Get()
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<IEnumerable<CarModel>> Get()
         {
-            return contextCars.All;
+            List<CarModel> result = null;
+            try
+            {
+                result = contextCars.All.ToList();
+                if (result.Count == 0)
+                {
+                    return NotFound();
+                }
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            return Ok(result);
         }
         [HttpGet("{id}")]
         public ActionResult<CarModel> Get(int id)
         {
             return contextCars.FindById(id);
+        }
+        [HttpPost]
+        public void Post([FromQuery] CarModel value)
+        {
+            contextCars.Update(value);
         }
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] CarModel value)

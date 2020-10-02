@@ -39,7 +39,25 @@ namespace TestApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarsModel");
+                    b.ToTable("CarModels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CarClass = "S",
+                            Model = "M3",
+                            Price = 54000f,
+                            Vendor = "BMW"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CarClass = "J",
+                            Model = "FX50",
+                            Price = 25000f,
+                            Vendor = "Infiniti"
+                        });
                 });
 #pragma warning restore 612, 618
         }

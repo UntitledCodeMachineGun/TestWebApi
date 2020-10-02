@@ -9,8 +9,8 @@ namespace TestApi
         public DbSet<CarModel> CarModels { get; set; }
 
         public WebApiCoreContext(DbContextOptions<WebApiCoreContext> options) : base(options)
-        { 
-        
+        {
+            Database.Migrate();
         }
         // methods for configure Db
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

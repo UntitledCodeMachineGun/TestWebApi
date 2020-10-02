@@ -9,8 +9,8 @@ using TestApi;
 namespace TestApi.Migrations
 {
     [DbContext(typeof(WebApiCoreContext))]
-    [Migration("20201002135304_CreateDatabase")]
-    partial class CreateDatabase
+    [Migration("20201002194408_Cars")]
+    partial class Cars
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,7 +41,25 @@ namespace TestApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarsModel");
+                    b.ToTable("CarModels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CarClass = "S",
+                            Model = "M3",
+                            Price = 54000f,
+                            Vendor = "BMW"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CarClass = "J",
+                            Model = "FX50",
+                            Price = 25000f,
+                            Vendor = "Infiniti"
+                        });
                 });
 #pragma warning restore 612, 618
         }
